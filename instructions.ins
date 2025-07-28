@@ -1,0 +1,204 @@
+1. Install LocalColabFold: 
+
+If you don't already have colabfold installed, you can follow the instruction at the LocalColabFold github repository (https://github.com/YoshitakaMo/localcolabfold). 
+
+2. Install ProteinMPNN
+
+3. Install 
+
+4. Create mpnnDes conda environment
+
+
+
+5. Create af2Des conda environment
+
+
+
+
+9. Create a file containing the list of your kinase-peptide complexes. E.g.
+
+$echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > list_of_complexes.dat
+
+
+
+10. Setup folders for your complex(es)
+
+python setup_KinasePep_folders.py --file list_of_complexes.dat
+
+11. Run AF-Multimer on your complexes
+
+-> If using SLURM:
+
+- run colabfold in batches (multiple jobs) with the script
+
+$ bash batch-run_AFmulti_gpu.sh
+
+[
+In the `batch-run_AFmulti_gpu.sh` script, the following are the variables you may want to change:
+
+* starting = which complex in the list to start processing from.
+* ending = which complex in the list to end at.
+]
+
+[The script above calls and launches (sbatch) the job script `runAFmulti_gpu.sh`. In the `runAFmulti_gpu.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.]
+
+OR 
+- run multiple colabfold predictions in one job with multiple GPUs in a node
+
+$ sbatch runAFmulti_parallel_gpu-pid.sh
+
+   [By editing the variable `max_parallel_jobs`, you can set the max number of parallel jobs to be run based on the number of GPU cards available on the node]
+   
+12. Make a directory to run ProteinMPNN:
+
+$ python setup_proteinmpnn_folders
+
+13. Copy code to run mpnn
+
+-> batch
+- Copy `run-mpnn.sh into the mpnn_des folder. Modify the variables `chains_to_design` (the chain(s) to design) and `fixed_positions` (residues to fix in the chain).
+- Run batch-run_mpnn.sh in the working home directory
+
+-> Parallel
+- run parallel_gpu_run_mpnn_gpu4v.sh from the project home directory
+
+14. Combine designed sequences from the separate batches/rounds and run weblogo
+
+$combine_fasta_and_plot_logo.sh
+
+15. Extract sequence recovery information
+
+$extract_seq_recov.py
+
+16. Plot a summary of the sequence recovery
+
+$stripplot_seqrec_csvOUT_opt.py
+
+17. Cluster designed sequences with CD-Hit
+
+$ bash batch-run_cdhit.sh
+
+[The script above calls and launches (sbatch) the job script `run-cdhit.sh`. In the `run-cdhit.sh` script, you can set .]
+
+18. Get summary of clusters
+
+$bash get_cluster_summary.sh
+
+19. Prepare kinase-peptide (designed) for folding
+Note: The version of proteinMPNN used in this work does not generate pdbs. Hence the need for post-design folding. However, with the newer version (and LigandMPNN) which generates structures of designed sequences, this step may not be necessary.
+
+$python prepare_kinase-pep_for_AFm-fold.py
+
+20. Fold proteinMPNN sequences for af2_init_guess
+
+-> If using SLURM:
+
+- run colabfold in batches (multiple jobs) with the script
+
+$ bash batch-run_AFmulti_fold_gpu_v100s.sh
+
+[
+In the `batch-run_AFmulti_fold_gpu_v100s.sh` script, the following are the variables you may want to change:
+
+* starting = which complex in the list to start processing from.
+* ending = which complex in the list to end at.
+]
+
+[The script above calls and launches (sbatch) the job script `runAFm_fold_gpu_v100s.sh`. In the `runAFm_fold_gpu_v100s` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.]
+
+OR 
+- run multiple colabfold predictions in one job with multiple GPUs in a node
+
+$ sbatch batch-run_AFmulti_gpu-pid_4v100.sh
+
+   [By editing the variable `max_parallel_jobs`, you can set the max number of parallel jobs to be run based on the number of GPU cards available on the node]
+   
+   [The above script calls `runAFm_fold_gpu_4v100.sh`
+   
+21. Prepare pdb for af2_init guess
+
+Note: af2_init guess has two requirements for the input pdb
+    1. the binder has to be the first chain
+    2. the numbers of the two chain must not overlap, i.e. there can't be two 1's etc. 
+    
+-> make substrate the first chain
+$batch-run_pdb_fix_cpu.sh
+    [calls run_pdb_fix_cpu.sh]
+    
+22. Set up the af2_init folder
+$mkdir af2_init_guess && cd af2_init_guess
+$cp ../{runAF2_init_guess_gpu4v_rec8.sh,plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py} .
+
+23. Run af2_init_guess
+
+$sbatch 1-4_runAF2_init_guess_gpu4v_rec8.sh
+
+[
+In the `1-4_runAF2_init_guess_gpu4v_rec8.sh` script, the following are the variables you may want to change:
+
+* starting = which complex in the list to start processing from.
+* ending = which complex in the list to end at.
+]
+
+24. Extract and merge af2_init_guess and folding data
+
+$cd ../
+$extract_merge_af2_init_guess_with_folding_data_rec8.py
+
+25. Add pTM+ipTM score to merged data
+
+$add_ptm-iptm_column_to_merged_data_rec8.py
+
+26. Setup folders for original substrates to run af2_init guess on them
+
+$setup_original_subs_folder.sh
+
+$cp ../{batch-run_pdb_fix_cpu_orig.sh,run_pdb_fix_cpu_orig.sh} .
+
+$cd original_subs/
+
+27. Prepare pdb for af2_init guess (for starting substrates)
+
+-> make substrate the first chain
+$cp ../{batch-run_pdb_fix_cpu_orig.sh,run_pdb_fix_cpu_orig.sh} .
+$batch-run_pdb_fix_cpu_orig.sh
+    [calls run_pdb_fix_cpu_orig.sh]
+    
+22. Set up the af2_init folder (for starting substrates)
+$mkdir af2_init_guess && cd af2_init_guess
+$cp ../runAF2_init_guess_gpu4v_rec8_originalSub.sh .
+
+23. Run af2_init_guess (for starting substrates)
+
+$sbatch runAF2_init_guess_gpu4v_rec8_originalSub.sh
+
+[
+In the `runAF2_init_guess_gpu4v_rec8_originalSub.sh` script, the following are the variables you may want to change:
+
+* starting = which complex in the list to start processing from.
+* ending = which complex in the list to end at.
+]
+
+24. Extract and merge af2_init_guess and folding data (for starting substrates)
+
+$cd ../
+$python extract_merge_af2_init_guess_with_folding_data_rec8_oriSub.py
+
+25. Add pTM+ipTM score to merged data
+
+$python add_ptm-iptm_column_to_merged_data_rec8_oriSub.py
+
+26. Merge test and oriSub data
+
+$python merge_test_subs_data_with_orig_subs.py
+
+27. Add amino acid sequences to design lists
+
+$cd ..
+$python extract_add_pepSEQ_to_outcsv.py
+
+28. Generate plots
+$cd af2_init_guess
+
+$python plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py
+
