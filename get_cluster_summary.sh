@@ -1,0 +1,1 @@
+for folder in *_*tide ; do grep "finished" "${folder}/AFcomplex/mpnn_out_clust/log.log" | awk -v id=${folder} '{print id" :   "$3"  "$4}' >> cluster_summary.dat ; done
