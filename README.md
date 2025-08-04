@@ -1,4 +1,4 @@
-## Subtimizer: A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates
+# Subtimizer: A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/abeebyekeen/subtimizer?style=flat-square)](https://github.com/abeebyekeen/subtimizer/releases)
 [![DOI](https://zenodo.org/badge/doi/10.1101/2025.07.04.663216.svg?style=svg)](http://dx.doi.org/10.1101/2025.07.04.663216)
@@ -13,13 +13,6 @@
 5. [Usage](#5-usage)
 6. [Updating the Code](#6-updating-the-code)
 7. [Citation](#7-citation)
-
-# Subtimizer: A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates
-
-[![GitHub release](https://img.shields.io/github/v/release/abeebyekeen/subtimizer?style=flat-square)](https://github.com/abeebyekeen/subtimizer/releases)
-[![DOI](https://zenodo.org/badge/doi/10.1101/2025.07.04.663216.svg?style=svg)](http://dx.doi.org/10.1101/2025.07.04.663216)
-
-Subtimizer is a structure-based design pipeline that integrates AlphaFold-Multimer and ProteinMPNN to optimize kinase peptide substrates for improved potency and selectivity. The pipeline includes structure prediction, sequence design, clustering, and rescoring steps.
 
 ---
 
