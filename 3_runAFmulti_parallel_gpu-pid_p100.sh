@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This file is batch script used to run commands on the BioHPC cluster.
+# This script is designed to run AlphaFold-Multimer (AF-Multimer) on a set of protein complexes
 # The script is submitted to the cluster using the SLURM `sbatch` command.
 # Lines starting with # are comments, and will not be run.
 # Lines starting with #SBATCH specify options for the scheduler.
@@ -10,18 +10,12 @@
 #SBATCH --job-name AF-multi_fold
 
 # Name of the SLURM partition that this job should run on.
-# SBATCH -p GPUA100                                # partition (queue)
 # SBATCH -p GPU4A100
 # SBATCH --gres=gpu:4
 # SBATCH -p GPU4v100
 # SBATCH --gres=gpu:4
-# SBATCH -p GPUv100s
 #SBATCH -p GPUp100
 #SBATCH --gres=gpu:2
-# SBATCH -p 384GB                               
-# SBATCH -p 512GB
-# Number of GPU cards
-# SBATCH --gres=gpu:4
 # Number of nodes required to run this job
 #SBATCH -N 1
 
@@ -30,9 +24,6 @@
 ##SBATCH --cpus-per-task 32
 
 # Memory (RAM) requirement/limit in MB.
-# SBATCH --mem 380928                       
-# SBATCH --mem 501760      
-# SBATCH --mem 761856                       
 #SBATCH --mem 252928
 
 # Time limit for the job in the format Days-H:M:S
@@ -45,9 +36,6 @@
 #SBATCH -o job_%j.out
 #SBATCH -e job_%j.err
 
-# Send an email when the job status changes, to the specfied address.
-#SBATCH --mail-type FAIL
-#SBATCH --mail-user Your.Email@Email.Address.com
 
 # load the appropriate cuda module if using SLURM
 module load cuda118/toolkit/11.8.0 cuda118/blas/11.8.0 cuda118/fft/11.8.0

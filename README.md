@@ -64,24 +64,23 @@ python 0_setup_KinasePep_folders.py --file example_list_of_complexes.dat
 
 #### Option A: Batch jobs with SLURM
 ```bash
-bash batch-run_AFmulti_gpu.sh
+bash batch-run_AFmulti_gpu_v100s.sh
 ```
 > In the `batch-run_AFmulti_gpu.sh` script, the following are the variables you may want to change:
 >* starting = which complex in the list to start processing from.
 >* ending = which complex in the list to end at.
 
-> The script above calls and launches (sbatch) the job script `runAFmulti_gpu.sh`.
-> In the `runAFmulti_gpu.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
+> The script above calls and launches (sbatch) the job script `2_runAFmulti_gpu_v100s.sh`.
 
-#### Option B: Parallel jobs (multiple GPUs)
+> In the `2_runAFmulti_gpu_v100s.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
+
+#### Option B: Parallel jobs (with multiple GPUs)
 ```bash
-sbatch runAFmulti_parallel_gpu-pid.sh
+sbatch 3_runAFmulti_parallel_gpu-pid_p100.sh
 ```
-- Edit `max_parallel_jobs` based on available GPUs
+> Edit `max_parallel_jobs` based on available GPUs
 
----
-
-### Step 5: Setup for ProteinMPNN
+### Step 5: Set up directory for ProteinMPNN
 ```bash
 python setup_proteinmpnn_folders.py
 ```
