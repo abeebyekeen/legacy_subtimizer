@@ -67,10 +67,11 @@ python 0_setup_KinasePep_folders.py --file example_list_of_complexes.dat
 bash batch-run_AFmulti_gpu.sh
 ```
 > In the `batch-run_AFmulti_gpu.sh` script, the following are the variables you may want to change:
-* starting = which complex in the list to start processing from.
-* ending = which complex in the list to end at.
+>* starting = which complex in the list to start processing from.
+>* ending = which complex in the list to end at.
 
-> The script above calls and launches (sbatch) the job script `runAFmulti_gpu.sh`. In the `runAFmulti_gpu.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
+> The script above calls and launches (sbatch) the job script `runAFmulti_gpu.sh`.
+> In the `runAFmulti_gpu.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
 
 #### Option B: Parallel jobs (multiple GPUs)
 ```bash
