@@ -14,21 +14,240 @@
 6. [Updating the Code](#6-updating-the-code)
 7. [Citation](#7-citation)
 
-## 1. Prerequisites
+# Subtimizer: A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates
 
-<font><p align="justify">You need to install the tools that the Subtimizer pipeline is based on.
+[![GitHub release](https://img.shields.io/github/v/release/abeebyekeen/subtimizer?style=flat-square)](https://github.com/abeebyekeen/subtimizer/releases)
+[![DOI](https://zenodo.org/badge/doi/10.1101/2025.07.04.663216.svg?style=svg)](http://dx.doi.org/10.1101/2025.07.04.663216)
 
-1. Install [Anaconda or Miniconda](https://www.anaconda.com/download/success), or [Mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)
-2. [Install LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
-3. Set up conda environment for ProteinMPNN
+Subtimizer is a structure-based design pipeline that integrates AlphaFold-Multimer and ProteinMPNN to optimize kinase peptide substrates for improved potency and selectivity. The pipeline includes structure prediction, sequence design, clustering, and rescoring steps.
+
+---
+
+## 🧰 Prerequisites
+
+1. [Anaconda](https://www.anaconda.com/products/distribution) or [Mamba](https://mamba.readthedocs.io)
+2. [LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
+3. [ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
+
+---
+
+## ⚙️ Installation
 
 ```bash
+git clone https://github.com/abeebyekeen/subtimizer.git
+cd subtimizer
 
+conda env create -f af2_des_env.yaml
+conda env create -f mpnn_des_env.yaml
 ```
 
-4. 
-5. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
-6. []()
+---
 
+## 🚀 Usage
 
-## 2. Installation
+### Step 1: Setup working directory
+```bash
+cd /your/working/directory
+```
+
+### Step 2: Prepare list of complexes
+```bash
+echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > list_of_complexes.dat
+```
+
+### Step 3: Setup folder structure
+```bash
+python 0_setup_KinasePep_folders.py --file list_of_complexes.dat
+```
+
+---
+
+### Step 4: Run AlphaFold-Multimer (AF-Multimer)
+
+#### Option A: Batch jobs (one complex per job)
+```bash
+bash batch-run_AFmulti_gpu.sh
+```
+- Edit `starting`, `ending` in `batch-run_AFmulti_gpu.sh`
+- Edit `rounds` in `runAFmulti_gpu.sh`
+
+#### Option B: Parallel jobs (multiple GPUs)
+```bash
+sbatch runAFmulti_parallel_gpu-pid.sh
+```
+- Edit `max_parallel_jobs` based on available GPUs
+
+---
+
+### Step 5: Setup for ProteinMPNN
+```bash
+python setup_proteinmpnn_folders.py
+```
+
+Copy and edit `run-mpnn.sh`:
+- `chains_to_design`
+- `fixed_positions`
+
+Then run:
+```bash
+bash batch-run_mpnn.sh
+# or
+bash parallel_gpu_run_mpnn_gpu4v.sh
+```
+
+---
+
+### Step 6: Combine FASTAs and plot sequence logos
+```bash
+bash combine_fasta_and_plot_logo.sh
+```
+
+---
+
+### Step 7: Evaluate sequence recovery
+```bash
+python extract_seq_recov.py
+python stripplot_seqrec_csvOUT_opt.py
+```
+
+---
+
+### Step 8: Cluster designed sequences
+```bash
+bash batch-run_cdhit.sh
+# (calls run-cdhit.sh)
+```
+
+---
+
+### Step 9: Summarize clusters
+```bash
+bash get_cluster_summary.sh
+```
+
+---
+
+### Step 10: Prepare designed sequences for rescoring
+```bash
+python prepare_kinase-pep_for_AFm-fold.py
+```
+
+---
+
+### Step 11: Re-fold designed sequences with AF-Multimer
+
+#### Option A: Batch SLURM
+```bash
+bash batch-run_AFmulti_fold_gpu_v100s.sh
+# (calls runAFm_fold_gpu_v100s.sh)
+```
+
+#### Option B: Parallel jobs
+```bash
+sbatch batch-run_AFmulti_gpu-pid_4v100.sh
+# (calls runAFm_fold_gpu_4v100.sh)
+```
+
+---
+
+### Step 12: Fix PDBs for af2_init_guess
+
+Ensure:
+- Substrate is first chain
+- No overlapping residue numbers
+
+```bash
+bash batch-run_pdb_fix_cpu.sh
+# (calls run_pdb_fix_cpu.sh)
+```
+
+---
+
+### Step 13: Setup `af2_init_guess` folder
+```bash
+mkdir af2_init_guess && cd af2_init_guess
+cp ../runAF2_init_guess_gpu4v_rec8.sh .
+cp ../plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py .
+```
+
+---
+
+### Step 14: Run af2_init_guess
+```bash
+sbatch 1-4_runAF2_init_guess_gpu4v_rec8.sh
+```
+
+---
+
+### Step 15: Extract and merge results
+```bash
+cd ../
+python extract_merge_af2_init_guess_with_folding_data_rec8.py
+python add_ptm-iptm_column_to_merged_data_rec8.py
+```
+
+---
+
+### Step 16: Compare with original (parent) peptides
+
+```bash
+bash setup_original_subs_folder.sh
+cd original_subs/
+bash batch-run_pdb_fix_cpu_orig.sh
+mkdir af2_init_guess && cd af2_init_guess
+cp ../runAF2_init_guess_gpu4v_rec8_originalSub.sh .
+sbatch runAF2_init_guess_gpu4v_rec8_originalSub.sh
+```
+
+Then:
+```bash
+cd ../
+python extract_merge_af2_init_guess_with_folding_data_rec8_oriSub.py
+python add_ptm-iptm_column_to_merged_data_rec8_oriSub.py
+```
+
+---
+
+### Step 17: Merge all data
+```bash
+python merge_test_subs_data_with_orig_subs.py
+python extract_add_pepSEQ_to_outcsv.py
+```
+
+---
+
+### Step 18: Generate final plots
+```bash
+cd af2_init_guess
+python plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py
+```
+
+---
+
+## 📁 File Structure
+
+```
+subtimizer/
+├── *.py                # Helper scripts
+├── *.sh                # SLURM scripts
+├── af2_des_env.yaml
+├── mpnn_des_env.yaml
+├── instructions.ins
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 📄 Citation
+
+If you use Subtimizer in your work, please cite:
+
+> **Yekeen, A. A. et al.** AI-driven design of potent and selective kinase peptide substrates using Subtimizer. *bioRxiv* (2025).  
+> [https://doi.org/10.1101/2025.07.04.663216](https://doi.org/10.1101/2025.07.04.663216)
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
