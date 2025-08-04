@@ -52,12 +52,12 @@ cd /your/working/directory
 
 ### Step 2: Prepare list of complexes
 ```bash
-echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > list_of_complexes.dat
+echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > example_list_of_complexes.dat
 ```
 
-### Step 3: Setup folder structure
+### Step 3: Set up folder structure
 ```bash
-python 0_setup_KinasePep_folders.py --file list_of_complexes.dat
+python 0_setup_KinasePep_folders.py --file example_list_of_complexes.dat
 ```
 
 ---
