@@ -1,9 +1,9 @@
-# Subtimizer: A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates
+## Subtimizer: A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates
 
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/abeebyekeen/subtimizer?style=flat-square)](https://github.com/abeebyekeen/subtimizer/releases)
 [![DOI](https://zenodo.org/badge/doi/10.1101/2025.07.04.663216.svg?style=svg)](http://dx.doi.org/10.1101/2025.07.04.663216)
 
-## Contents
+### Contents
 
 0. [Contents](#contents)
 1. [Prerequisites/Requirements](#prerequisites)
@@ -18,9 +18,9 @@
 
 ## Prerequisites
 
-1. [Anaconda](https://www.anaconda.com/products/distribution) or [Mamba](https://mamba.readthedocs.io)
-2. [LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
-3. [ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
+1. [Install Anaconda or Miniconda](https://www.anaconda.com/products/distribution) or [Mamba](https://mamba.readthedocs.io)
+2. [Install ColabFold](https://github.com/YoshitakaMo/localcolabfold)
+3. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
 4. [Get the af2_initial_guess code](https://github.com/nrbennet/dl_binder_design)
 
 ---
