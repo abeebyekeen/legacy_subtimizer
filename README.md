@@ -30,7 +30,5 @@
 5. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
 6. []()
 
-> **CHAPERON*****g*** has been tested with GROMACS versions 2020.x, 2021.x, and 2022.x, but should generally work with GROMACS 5.x versions and later.
-</p></font>
 
 ## 2. Installation
