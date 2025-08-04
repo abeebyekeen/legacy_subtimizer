@@ -20,8 +20,15 @@
 
 1. Install [Anaconda or Miniconda](https://www.anaconda.com/download/success), or [Mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)
 2. [Install LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
-3. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
-4. []()
+3. Set up conda environment for ProteinMPNN
+
+```bash
+
+```
+
+4. 
+5. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
+6. []()
 
 > **CHAPERON*****g*** has been tested with GROMACS versions 2020.x, 2021.x, and 2022.x, but should generally work with GROMACS 5.x versions and later.
 </p></font>
