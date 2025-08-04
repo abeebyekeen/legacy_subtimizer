@@ -18,7 +18,7 @@
 
 <font><p align="justify">You need to install the tools that the Subtimizer pipeline is based on.
 
-1. Install [Anaconda or Miniconda](https://www.anaconda.com/download/success), or [Mamba]()
+1. Install [Anaconda or Miniconda](https://www.anaconda.com/download/success), or [Mamba](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)
 2. [Install LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
 3. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
 4. []()
