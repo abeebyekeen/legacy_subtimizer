@@ -106,4 +106,3 @@ dependencies:
       - seaborn==0.13.2
       - tzdata==2024.2
       - urllib3==2.2.3
-prefix: /work/RADONC/s226058/.conda/envs/mpnn_des
