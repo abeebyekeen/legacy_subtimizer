@@ -3,12 +3,12 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/abeebyekeen/subtimizer?style=flat-square)](https://github.com/abeebyekeen/subtimizer/releases)
 [![DOI](https://zenodo.org/badge/doi/10.1101/2025.07.04.663216.svg?style=svg)](http://dx.doi.org/10.1101/2025.07.04.663216)
 
-## 0. Contents
+## Contents
 
-0. [Contents](#0-contents)
-1. [Prerequisites/Requirements](#1-prerequisitesrequirements)
-2. [Installation](#2-installation)
-3. [Uninstall](#3-uninstall)
+0. [Contents](#contents)
+1. [Prerequisites/Requirements](#prerequisites)
+2. [Clone Subtimizer](#clone-subtimizer)
+3. [Set up environments](#set-up-environments)
 4. [Optional Dependencies](#4-optional-dependencies)
 5. [Usage](#5-usage)
 6. [Updating the Code](#6-updating-the-code)
@@ -16,20 +16,27 @@
 
 ---
 
-## 🧰 Prerequisites
+## Prerequisites
 
 1. [Anaconda](https://www.anaconda.com/products/distribution) or [Mamba](https://mamba.readthedocs.io)
 2. [LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
 3. [ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
+4. [Get the af2_initial_guess code](https://github.com/nrbennet/dl_binder_design)
 
 ---
 
-## ⚙️ Installation
+## Clone Subtimizer
 
 ```bash
 git clone https://github.com/abeebyekeen/subtimizer.git
 cd subtimizer
+```
 
+---
+
+## Set up environments
+
+```bash
 conda env create -f af2_des_env.yaml
 conda env create -f mpnn_des_env.yaml
 ```
@@ -38,7 +45,7 @@ conda env create -f mpnn_des_env.yaml
 
 ## 🚀 Usage
 
-### Step 1: Setup working directory
+### Step 1: Set up working directory
 ```bash
 cd /your/working/directory
 ```
