@@ -1,9 +1,9 @@
 #!/bin/bash
 
 line_num=0
-starting=11
+starting=1
 update_start="$starting"
-ending=11
+ending=4
 firstFour=8
 
 while IFS= read -r line
@@ -97,4 +97,4 @@ do
             update_start=$(( update_start + 1 ))
         fi
     fi
-done < list_of_complexes_dark_confident_extra.dat
+done < example_list_of_complexes.dat

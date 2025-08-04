@@ -8,11 +8,10 @@
 0. [Contents](#contents)
 1. [Prerequisites/Requirements](#prerequisites)
 2. [Clone Subtimizer](#clone-subtimizer)
-3. [Set up environments](#set-up-environments)
-4. [Optional Dependencies](#4-optional-dependencies)
-5. [Usage](#5-usage)
-6. [Updating the Code](#6-updating-the-code)
-7. [Citation](#7-citation)
+3. [Set Up Environments](#set-up-environments)
+4. [Usage](#usage)
+5. [Updating the Code](#6-updating-the-code)
+6. [Citation](#7-citation)
 
 ---
 
@@ -80,112 +79,109 @@ sbatch 3_runAFmulti_parallel_gpu-pid_p100.sh
 python 4_setup_proteinmpnn_folders.py --file example_list_of_complexes.dat
 ```
 
-Copy `run-mpnn.sh` into the mpnn_des folder.
-Edit `run-mpnn.sh`:
+Copy `6_run-mpnn.sh` into the mpnn_des folder.
+Edit `6_run-mpnn.sh`:
 - `chains_to_design` (the chain(s) to design)
 - `fixed_positions` (residues to fix in the chain)
 
 #### Step 5: Run ProteinMPNN
+Change to mpnn_des environment
+```bash
+conda activate mpnn_des
+```
+
 While in the working directory, run:
 ```bash
-bash batch-run_mpnn.sh
+bash 5_batch-run_mpnn.sh
 # or
-bash parallel_gpu_run_mpnn_gpu4v.sh
+bash 7_parallel_gpu_run_mpnn_gpu4v.sh
 ```
 
-
-### Step 6: Combine FASTAs and plot sequence logos
+#### Step 6: Combine designed sequences and plot sequence logos
 ```bash
-bash combine_fasta_and_plot_logo.sh
+bash 8_combine_fasta_and_plot_logo.sh
 ```
 
----
-
-### Step 7: Evaluate sequence recovery
+#### Step 7: Extract and plot sequence recovery information
 ```bash
-python extract_seq_recov.py
-python stripplot_seqrec_csvOUT_opt.py
+python 9_extract_seq_recov.py
+python 10_stripplot_seqrec_csvOUT_opt.py
 ```
 
----
-
-### Step 8: Cluster designed sequences
+#### Step 8: Cluster designed sequences with CD-Hit
 ```bash
-bash batch-run_cdhit.sh
-# (calls run-cdhit.sh)
+bash 11_batch-run_cdhit.sh
+# (calls 12_run-cdhit.sh)
 ```
 
----
-
-### Step 9: Summarize clusters
+#### Step 9: Summarize clusters
 ```bash
-bash get_cluster_summary.sh
+bash 13_get_cluster_summary.sh
 ```
 
----
-
-### Step 10: Prepare designed sequences for rescoring
+#### Step 10: Prepare kinase-peptide (designed) for folding
 ```bash
-python prepare_kinase-pep_for_AFm-fold.py
+python 14_prepare_kinase-pep_for_AFm-fold.py
 ```
 
----
+#### Step 11: Fold designed sequences with AF-Multimer
 
-### Step 11: Re-fold designed sequences with AF-Multimer
+>Note: The version of proteinMPNN used in this work does not generate pdbs. Hence the need for post-design folding. 
 
-#### Option A: Batch SLURM
-```bash
-bash batch-run_AFmulti_fold_gpu_v100s.sh
-# (calls runAFm_fold_gpu_v100s.sh)
-```
+>However, with the [newer version (and LigandMPNN)](https://github.com/dauparas/LigandMPNN) which generates structures of designed sequences, this step may not be necessary.
 
-#### Option B: Parallel jobs
-```bash
-sbatch batch-run_AFmulti_gpu-pid_4v100.sh
-# (calls runAFm_fold_gpu_4v100.sh)
-```
-
----
-
-### Step 12: Fix PDBs for af2_init_guess
-
-Ensure:
-- Substrate is first chain
-- No overlapping residue numbers
+Change to af2_des environment
 
 ```bash
-bash batch-run_pdb_fix_cpu.sh
-# (calls run_pdb_fix_cpu.sh)
+conda activate af2_des
 ```
 
----
+##### Option A: Batch SLURM
+```bash
+bash 15_batch-run_AFmulti_fold_gpu_v100s.sh
+# (calls 16_runAFm_fold_gpu_v100s.sh)
+```
 
-### Step 13: Setup `af2_init_guess` folder
+##### Option B: Parallel jobs
+```bash
+sbatch 17_batch-run_AFmulti_gpu-pid_4v100.sh
+# (18_calls runAFm_fold_gpu_4v100.sh)
+```
+
+#### Step 12: Prepare PDBs for af2_init_guess
+
+>Note: af2_init guess has two requirements for the input pdb
+    * the binder (substrate) has to be the first chain
+    * no overlapping residue numbers between chains 
+
+```bash
+bash 19_batch-run_pdb_fix_cpu.sh
+# (20_calls run_pdb_fix_cpu.sh)
+```
+
+#### Step 13: Setup `af2_init_guess` folder
 ```bash
 mkdir af2_init_guess && cd af2_init_guess
 cp ../runAF2_init_guess_gpu4v_rec8.sh .
 cp ../plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py .
 ```
 
----
-
-### Step 14: Run af2_init_guess
+#### Step 14: Run af2_init_guess
 ```bash
 sbatch 1-4_runAF2_init_guess_gpu4v_rec8.sh
 ```
 
----
 
-### Step 15: Extract and merge results
+#### Step 15: Extract and merge results
 ```bash
 cd ../
 python extract_merge_af2_init_guess_with_folding_data_rec8.py
 python add_ptm-iptm_column_to_merged_data_rec8.py
 ```
 
----
 
-### Step 16: Compare with original (parent) peptides
+
+#### Step 16: Compare with original (parent) peptides
 
 ```bash
 bash setup_original_subs_folder.sh
@@ -203,17 +199,17 @@ python extract_merge_af2_init_guess_with_folding_data_rec8_oriSub.py
 python add_ptm-iptm_column_to_merged_data_rec8_oriSub.py
 ```
 
----
 
-### Step 17: Merge all data
+
+#### Step 17: Merge all data
 ```bash
 python merge_test_subs_data_with_orig_subs.py
 python extract_add_pepSEQ_to_outcsv.py
 ```
 
----
 
-### Step 18: Generate final plots
+
+#### Step 18: Generate final plots
 ```bash
 cd af2_init_guess
 python plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py

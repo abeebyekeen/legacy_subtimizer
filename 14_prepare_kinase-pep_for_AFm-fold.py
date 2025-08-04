@@ -3,7 +3,6 @@ import os
 import time
 import shutil
 
-# files = glob.glob("*tide")
 
 with open("example_list_of_complexes.dat") as folder_list:
     for f in folder_list:

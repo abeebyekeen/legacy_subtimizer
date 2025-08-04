@@ -2,9 +2,9 @@
 
 line_num=0
 design_count=0
-starting=18
+starting=1
 update_start="$starting"
-ending=41
+ending=4
 while IFS= read -r line
 do
     line_num=$(( line_num + 1 ))

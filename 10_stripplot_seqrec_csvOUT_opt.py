@@ -17,7 +17,8 @@ import time
 
 #fetch kinase-peptide complex data
 def get_data():
-    excluded = {"AKT1_3akt1tide", "AKT2_3akt1tide", "AKT3_3akt1tide", "SGK1_3akt1tide"}
+    # excluded = {"AKT1_3akt1tide", "AKT2_3akt1tide", "AKT3_3akt1tide", "SGK1_3akt1tide"}
+    excluded = {}
     with open("example_list_of_complexes.dat") as file:
         return [line.strip() for line in file if line.strip() not in excluded]
 
@@ -60,7 +61,7 @@ def plot_strip(secrecSet, datarange, palettex):
 def main():
     files_list = get_data()
     palette = sns.color_palette(cc.glasbey, n_colors=48)
-    ranges = [(0, 11), (12, 23), (24, 35), (36, 47)]
+    ranges = [(0, 11)]#, (12, 23), (24, 35), (36, 47)]
 
     for idx, (start, end) in enumerate(ranges, 1):
         print(f"\nPlotting set {idx} ({start+1} to {end+1})\n")
