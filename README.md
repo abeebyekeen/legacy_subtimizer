@@ -13,3 +13,17 @@
 5. [Usage](#5-usage)
 6. [Updating the Code](#6-updating-the-code)
 7. [Citation](#7-citation)
+
+## 1. Prerequisites
+
+<font><p align="justify">You need to install the tools that the Subtimizer pipeline is based on.
+
+1. Install [Anaconda or Miniconda](https://www.anaconda.com/download/success), or [Mamba]()
+2. [Install LocalColabFold](https://github.com/YoshitakaMo/localcolabfold)
+3. [Install ProteinMPNN](https://github.com/dauparas/ProteinMPNN)
+4. []()
+
+> **CHAPERON*****g*** has been tested with GROMACS versions 2020.x, 2021.x, and 2022.x, but should generally work with GROMACS 5.x versions and later.
+</p></font>
+
+## 2. Installation
