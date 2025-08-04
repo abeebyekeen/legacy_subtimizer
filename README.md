@@ -16,7 +16,7 @@
 
 ---
 
-## Prerequisites
+### Prerequisites
 
 1. [Install Anaconda or Miniconda](https://www.anaconda.com/products/distribution) or [Mamba](https://mamba.readthedocs.io)
 2. [Install ColabFold](https://github.com/YoshitakaMo/localcolabfold)
@@ -25,7 +25,7 @@
 
 ---
 
-## Clone Subtimizer
+### Clone Subtimizer
 
 ```bash
 git clone https://github.com/abeebyekeen/subtimizer.git
@@ -34,7 +34,7 @@ cd subtimizer
 
 ---
 
-## Set up environments
+### Set up environments
 
 ```bash
 conda env create -f af2_des_env.yaml
@@ -43,14 +43,14 @@ conda env create -f mpnn_des_env.yaml
 
 ---
 
-## 🚀 Usage
+### Usage
 
-### Step 1: Set up working directory
+#### Step 1: Set up working directory
 ```bash
 cd /your/working/directory
 ```
 
-### Step 2: Prepare list of complexes
+#### Step 2: Prepare list of complexes
 ```bash
 echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > example_list_of_complexes.dat
 ```
