@@ -45,22 +45,17 @@ conda env create -f mpnn_des_env.yaml
 
 ### Usage
 
-#### Step 1: Set up working directory
-```bash
-cd /your/working/directory
-```
-
-#### Step 2: Prepare list of complexes
+#### Step 1: Prepare list of complexes
 ```bash
 echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > example_list_of_complexes.dat
 ```
 
-### Step 3: Set up folder structure
+### Step 2: Set up folder structure
 ```bash
 python 0_setup_KinasePep_folders.py --file example_list_of_complexes.dat
 ```
 
-### Step 4: Run AF-Multimer
+### Step 3: Run AF-Multimer
 
 #### Option A: Batch jobs with SLURM
 ```bash
@@ -80,23 +75,24 @@ sbatch 3_runAFmulti_parallel_gpu-pid_p100.sh
 ```
 > Edit `max_parallel_jobs` based on available GPUs
 
-### Step 5: Set up directory for ProteinMPNN
+#### Step 4: Set up directory for ProteinMPNN
 ```bash
-python setup_proteinmpnn_folders.py
+python 4_setup_proteinmpnn_folders.py --file example_list_of_complexes.dat
 ```
 
-Copy and edit `run-mpnn.sh`:
-- `chains_to_design`
-- `fixed_positions`
+Copy `run-mpnn.sh` into the mpnn_des folder.
+Edit `run-mpnn.sh`:
+- `chains_to_design` (the chain(s) to design)
+- `fixed_positions` (residues to fix in the chain)
 
-Then run:
+#### Step 5: Run ProteinMPNN
+While in the working directory, run:
 ```bash
 bash batch-run_mpnn.sh
 # or
 bash parallel_gpu_run_mpnn_gpu4v.sh
 ```
 
----
 
 ### Step 6: Combine FASTAs and plot sequence logos
 ```bash

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# This file is batch script used to run commands on the BioHPC cluster.
+# This script is designed to run multiple instances of the ProteinMPNN in parallel on a GPU cluster using SLURM.
+# It reads a list of complexes from a file, launches MPNN for each complex,
+# and manages the GPU resources to ensure that a maximum number of jobs run in parallel.
 # The script is submitted to the cluster using the SLURM `sbatch` command.
 # Lines starting with # are comments, and will not be run.
 # Lines starting with #SBATCH specify options for the scheduler.
@@ -10,31 +12,13 @@
 #SBATCH --job-name mpnn_des_parallel
 
 # Name of the SLURM partition that this job should run on.
-# SBATCH -p GPUA100                                # partition (queue)
-# SBATCH -p GPU4A100
-# SBATCH --gres=gpu:4
 #SBATCH -p GPU4v100
 #SBATCH --gres=gpu:4
-# SBATCH -p GPUv100s
-# SBATCH -p GPUp100
-# SBATCH --gres=gpu:1
-# SBATCH -p 384GB                               
-# SBATCH -p 512GB
-# Number of GPU cards
-# SBATCH --gres=gpu:4
 # Number of nodes required to run this job
 #SBATCH -N 1
 
-##SBATCH --ntasks-per-node 8
-
-##SBATCH --cpus-per-task 32
-
 # Memory (RAM) requirement/limit in MB.
-# SBATCH --mem 380928
 #SBATCH --mem 371552
-# SBATCH --mem 501760      
-# SBATCH --mem 761856                       
-# SBATCH --mem 252928
 
 # Time limit for the job in the format Days-H:M:S
 # A job that reaches its time limit will be cancelled.
@@ -55,15 +39,15 @@
 module load cuda121/toolkit/12.1.0
 
 line_num=0
-starting=3
+starting=1
 current_des="$starting"
-ending=41
+ending=4 # the ending number to the last complex to process
 
 
 max_parallel_jobs=4
 declare -A gpu_jobs=()  # array to track GPU and job PID
 
-# find an available GPU
+# find available GPU
 find_available_gpu() {
     for gpu in $(seq 0 $((max_parallel_jobs - 1))); do
         if [[ -z ${gpu_jobs[$gpu]} ]]; then
@@ -108,7 +92,7 @@ launch_task() {
             --sampling_temp "0.1" \
             --batch_size 32 &
 
-    # save PID of the background job with the GPU ID
+    # save PID of the bg job with the GPU ID
     gpu_jobs[$gpu_id]=$!
     ((current_des++))
 

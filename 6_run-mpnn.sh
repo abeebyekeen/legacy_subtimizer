@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This file is batch script used to run commands on the BioHPC cluster.
+# This script is designed to run ProteinMPNN on a set of protein complexes
 # The script is submitted to the cluster using the SLURM `sbatch` command.
 # Lines starting with # are comments, and will not be run.
 # Lines starting with #SBATCH specify options for the scheduler.
@@ -10,25 +10,13 @@
 #SBATCH --job-name mpnn_des
 
 # Name of the SLURM partition that this job should run on.
-# SBATCH -p GPUA100                                # partition (queue)
 #SBATCH -p GPUv100s  
-# SBATCH -p GPU4A100
-# SBATCH -p 384GB                                # partition (queue)
-# SBATCH -p 512GB
-# Number of GPU cards
 #SBATCH --gres=gpu:1
 # Number of nodes required to run this job
 #SBATCH -N 1
 
-##SBATCH --ntasks-per-node 8
-
-##SBATCH --cpus-per-task 32
-
 # Memory (RAM) requirement/limit in MB.
 #SBATCH --mem 380928                       # Memory Requirement (MB)
-# SBATCH --mem 501760      
-# SBATCH --mem 761856                       # Memory Requirement (MB)
-
 
 # Time limit for the job in the format Days-H:M:S
 # A job that reaches its time limit will be cancelled.
