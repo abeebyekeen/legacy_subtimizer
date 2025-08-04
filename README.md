@@ -60,16 +60,17 @@ echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > example_
 python 0_setup_KinasePep_folders.py --file example_list_of_complexes.dat
 ```
 
----
+### Step 4: Run AF-Multimer
 
-### Step 4: Run AlphaFold-Multimer (AF-Multimer)
-
-#### Option A: Batch jobs (one complex per job)
+#### Option A: Batch jobs with SLURM
 ```bash
 bash batch-run_AFmulti_gpu.sh
 ```
-- Edit `starting`, `ending` in `batch-run_AFmulti_gpu.sh`
-- Edit `rounds` in `runAFmulti_gpu.sh`
+> In the `batch-run_AFmulti_gpu.sh` script, the following are the variables you may want to change:
+* starting = which complex in the list to start processing from.
+* ending = which complex in the list to end at.
+
+> The script above calls and launches (sbatch) the job script `runAFmulti_gpu.sh`. In the `runAFmulti_gpu.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
 
 #### Option B: Parallel jobs (multiple GPUs)
 ```bash
