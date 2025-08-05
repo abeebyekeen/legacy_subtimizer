@@ -17,9 +17,9 @@ do
         parent_dir="${line}/AFcomplex"
         rm -rf ${parent_dir}/mpnn_out_clust && mkdir ${parent_dir}/mpnn_out_clust
         \cp ${parent_dir}/mpnn_out/seqs/all_design.fa ${parent_dir}/mpnn_out_clust/
-        \cp ./run-cdhit.sh ${parent_dir}/mpnn_out_clust/
+        \cp ./12_run-cdhit.sh ${parent_dir}/mpnn_out_clust/
         pushd "${parent_dir}/mpnn_out_clust"
-        sbatch run-cdhit.sh
+        sbatch 12_run-cdhit.sh
         design_count=$(( design_count + 1 ))
         echo -e "Clustering ${line}: Design $update_start of $ending \n"
         sleep 1

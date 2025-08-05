@@ -30,13 +30,13 @@ do
             elif [[ ! -d "${parent_dir}/mpnn_out_clust_fold/af2_init_guess_in" ]]
                 then mkdir ${parent_dir}/mpnn_out_clust_fold/af2_init_guess_in
             fi
-            \cp -f ./run_pdb_fix_cpu.sh "${parent_dir}/mpnn_out_clust_fold/"
+            \cp -f ./20_run_pdb_fix_cpu.sh "${parent_dir}/mpnn_out_clust_fold/"
             cd "${parent_dir}/mpnn_out_clust_fold/"
             touch running_job_${line}.job
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch run_pdb_fix_cpu.sh
+            sbatch 20_run_pdb_fix_cpu.sh
 
             echo -e "Fixed ${line}: Kinase-pep $update_start of $ending \n"         
 
@@ -69,13 +69,13 @@ do
             elif [[ ! -d "${parent_dir}/mpnn_out_clust_fold/af2_init_guess_in" ]]
                 then mkdir ${parent_dir}/mpnn_out_clust_fold/af2_init_guess_in
             fi            
-            \cp -f ./run_pdb_fix_cpu.sh "${parent_dir}/mpnn_out_clust_fold/"
+            \cp -f ./20_run_pdb_fix_cpu.sh "${parent_dir}/mpnn_out_clust_fold/"
             cd "${parent_dir}/mpnn_out_clust_fold/"
             touch running_job_${line}.job
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch run_pdb_fix_cpu.sh
+            sbatch 20_run_pdb_fix_cpu.sh
 
             echo -e "Fixing ${line}: Kinase-pep $update_start of $ending \n"         
 

@@ -27,13 +27,13 @@ do
         if (( "$firstFour" >= 1 ))
         then
             mkdir -p ${parent_dir}/mpnn_out_clust_fold/structs
-            \cp -f ./runAFm_fold_gpu-pid_4v100.sh "${parent_dir}/mpnn_out_clust_fold/seqs/"
+            \cp -f ./18_runAFm_fold_gpu-pid_4v100.sh "${parent_dir}/mpnn_out_clust_fold/seqs/"
             cd "${parent_dir}/mpnn_out_clust_fold/seqs"
             touch gpu4v100running_job_${line}.job
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch runAFm_fold_gpu-pid_4v100.sh
+            sbatch 18_runAFm_fold_gpu-pid_4v100.sh
 
             design_count=$(( design_count + 1 ))
             echo -e "Folding ${line}: Kinase-pep $update_start of $ending \n"         
@@ -62,10 +62,10 @@ do
             # echo -e "First job launched\n"
             # sleep 2
             mkdir -p ${parent_dir}/mpnn_out_clust_fold/structs
-            \cp -f ./runAFm_fold_gpu-pid_4v100.sh "${parent_dir}/mpnn_out_clust_fold/seqs/"
+            \cp -f ./18_runAFm_fold_gpu-pid_4v100.sh "${parent_dir}/mpnn_out_clust_fold/seqs/"
             cd "${parent_dir}/mpnn_out_clust_fold/seqs"
             touch gpu4v100running_job_${line}.job
-            sbatch runAFm_fold_gpu-pid_4v100.sh
+            sbatch 18_runAFm_fold_gpu-pid_4v100.sh
 
             design_count=$(( design_count + 1 ))
             echo -e "Folding ${line}: Kinase-pep $update_start of $ending \n"

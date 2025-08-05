@@ -10,12 +10,11 @@ import os
 import time
 import shutil
 
-
 work_home = os.getcwd()
-work_home_parent = "/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/YST_fixed_dark_fam/confident_AFMcomplexes"
+work_home_parent = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 def main():
-    with open("../list_of_complexes_dark_confident.dat") as complexes:
+    with open("../example_list_of_complexes.dat") as complexes:
         for line_no, kinase_pep in enumerate(complexes):
             kinase_pep = kinase_pep.rstrip("\n")
             af2_sc_file = get_af2_score_file(kinase_pep)
@@ -122,7 +121,6 @@ def write_out_data(kinase_pep, data_dict):
         os.remove(dest+'/'+merged_data)
     shutil.copy2(merged_data, dest)
     print(" Copying the written data to the home working dir (af2_init_guess)\n")
-
 
 if __name__ == "__main__":
     main()

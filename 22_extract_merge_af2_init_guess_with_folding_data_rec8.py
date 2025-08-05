@@ -10,12 +10,11 @@ import os
 import time
 import shutil
 
-
 work_home = os.getcwd()
 intermed8 = "AFcomplex/mpnn_out_clust_fold"
 
 def main():
-    with open("list_of_complexes_dark_confident.dat") as complexes:
+    with open("example_list_of_complexes.dat") as complexes:
         for line_no, kinase_pep in enumerate(complexes):
             kinase_pep = kinase_pep.rstrip("\n")
             af2_sc_file = get_af2_score_file(kinase_pep)
@@ -41,8 +40,6 @@ def get_af2_score_file(kinase_pep):
                                      
 def merge_metrics(kinase_pep, af2score_file):
     merger_dict = {}
-    # print(f" Printing af2score_file {af2score_file}")
-    # time.sleep(2)
     with open(af2score_file) as af2_file:
         print(f" Opening af2score.dat for {kinase_pep}\n")
         # time.sleep(1)
@@ -113,13 +110,10 @@ def write_out_data(kinase_pep, data_dict):
     dest = f"{work_home}/af2_init_guess/data/{kinase_pep}/"
 
     if not os.path.exists(dest):
-        # os.mkdir(dest)
-        # os.makedirs(dest, exist_ok=True)
         os.makedirs(dest)
 
     shutil.copy2(merged_data, dest)
     print(" Copying the written data to the home working dir (af2_init_guess)\n")
-
 
 if __name__ == "__main__":
     main()

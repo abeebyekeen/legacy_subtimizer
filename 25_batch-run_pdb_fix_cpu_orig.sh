@@ -3,8 +3,8 @@
 line_num=0
 starting=1
 update_start="$starting"
-ending=40
-firstFour=9
+ending=4
+firstFour=4
 
 while IFS= read -r line
 do
@@ -30,13 +30,13 @@ do
             elif [[ ! -d "${parent_dir}/af2_init_guess_in" ]]
                 then mkdir ${parent_dir}/af2_init_guess_in
             fi
-            \cp -f ./run_pdb_fix_cpu_orig.sh "${parent_dir}/"
+            \cp -f ./26_run_pdb_fix_cpu_orig.sh "${parent_dir}/"
             cd "${parent_dir}/"
             touch running_job_${line}.job
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch run_pdb_fix_cpu_orig.sh
+            sbatch 26_run_pdb_fix_cpu_orig.sh
 
             echo -e "Folding ${line}: Kinase-pep $update_start of $ending \n"         
 
@@ -69,13 +69,13 @@ do
             elif [[ ! -d "${parent_dir}/af2_init_guess_in" ]]
                 then mkdir ${parent_dir}/af2_init_guess_in
             fi            
-            \cp -f ./run_pdb_fix_cpu_orig.sh "${parent_dir}/"
+            \cp -f ./26_run_pdb_fix_cpu_orig.sh "${parent_dir}/"
             cd "${parent_dir}/"
             touch running_job_${line}.job
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch run_pdb_fix_cpu_orig.sh
+            sbatch 26_run_pdb_fix_cpu_orig.sh
 
             echo -e "Folding ${line}: Kinase-pep $update_start of $ending \n"         
 
@@ -97,4 +97,4 @@ do
             update_start=$(( update_start + 1 ))
         fi
     fi
-done < ../list_of_complexes_dark_confident.dat
+done < ../example_list_of_complexes.dat

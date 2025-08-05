@@ -1,4 +1,5 @@
 __author__  = 'Abeeb A. Yekeen'
+__email__   = 'abeeb.yekeen@utsouthwestern.edu'
 __date__    = 'Jan-30-2024'
 __version__ = '1.0'
 __status__  = 'Beta'

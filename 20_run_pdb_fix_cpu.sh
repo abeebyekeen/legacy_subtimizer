@@ -38,7 +38,7 @@ total_pdb="$(ls *.pdb | wc -l)"
 for pdb in *.pdb
 do
     #use pymol python here
-    python \
+    path_to/pymol/2.5/bin/python \
     "/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/format_chain_id_resn_biopython_pymol.py" \
     -i ${pdb} -o ${pdb}
     

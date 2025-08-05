@@ -9,15 +9,13 @@ __status__  = 'Beta'
 import os, time
 import shutil
 
-parent_home = "/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/YST_fixed_dark_fam/confident_AFMcomplexes"
+parent_home = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 parent_intermed8 = "AFcomplex/mpnn_out_clust_fold/af2_init_guess.rec8"
-# ori_sub_home = "/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/YST_fixed/extra/original_subs"
 ori_sub_intermed8 = "original_subs/af2_init_guess/data"
 
 with open("../list_of_complexes_dark_confident.dat") as complexes:
     for line_no, kinase_pep in enumerate(complexes):
         print(f"Processing {kinase_pep}")
-        # time.sleep(1)
         kinase_pep = kinase_pep.rstrip("\n")
 
         if kinase_pep.startswith("#"): continue
@@ -39,8 +37,6 @@ with open("../list_of_complexes_dark_confident.dat") as complexes:
                                 kinase_pep,
                                 f"{kinase_pep}_merged_scores_pTM-ipTM_with_oriSubs.csv"
                                 )
-        # if os.path.isfile(out_file): os.remove(out_file)
-        # shutil.copyfile(af2_score_des, out_file)
         with open(out_file, "w") as outf:
             with open(af2_score_des) as des:
                 for data in des:
@@ -50,7 +46,6 @@ with open("../list_of_complexes_dark_confident.dat") as complexes:
                 for line_no, line in enumerate(ori):
                     if line_no == 1:
                         print(f"Writing out {line}")
-                        # time.sleep(1)
                         outf.write(line)
                         break
 

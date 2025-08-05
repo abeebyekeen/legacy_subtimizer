@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This file is batch script used to run commands on the BioHPC cluster.
+# This is a SLURM job script to run AlphaFold2 with initial guess on multiple complexes in parallel using multiple GPUs.
 # The script is submitted to the cluster using the SLURM `sbatch` command.
 # Lines starting with # are comments, and will not be run.
 # Lines starting with #SBATCH specify options for the scheduler.
@@ -9,30 +9,12 @@
 # Name for the job that will be visible in the job queue and accounting tools.
 #SBATCH --job-name AF2ini_guess
 
-# Name of the SLURM partition that this job should run on.
-# SBATCH -p GPUA100                                # partition (queue)
-# SBATCH -p GPU4A100
 #SBATCH -p GPU4v100
-# SBATCH -p GPUv100s
-# SBATCH -p GPUp100
-# SBATCH --gres=gpu:1
-# SBATCH -p 384GB                               
-# SBATCH -p 512GB
-# Number of GPU cards
 #SBATCH --gres=gpu:4
 # Number of nodes required to run this job
 #SBATCH -N 1
 
-##SBATCH --ntasks-per-node 8
-
-##SBATCH --cpus-per-task 32
-
-# Memory (RAM) requirement/limit in MB.
-# SBATCH --mem 380928
 #SBATCH --mem 371552
-# SBATCH --mem 501760      
-# SBATCH --mem 761856                       
-# SBATCH --mem 252928
 
 # Time limit for the job in the format Days-H:M:S
 # A job that reaches its time limit will be cancelled.
@@ -44,29 +26,16 @@
 #SBATCH -o job_%j.out
 #SBATCH -e job_%j.err
 
-# Send an email when the job status changes, to the specfied address.
-#SBATCH --mail-type FAIL
-#SBATCH --mail-user Abeeb.Yekeen@UTSouthwestern.edu
-
-
-
-# Activate environment
-
-# conda activate af2_des
-# sleep 3
-
-# module load
 module load cuda121/toolkit/12.1.0
 
-
-set_dir="/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/\
-YST_fixed_dark_fam/confident_AFMcomplexes/original_subs"
+current_direct="$(pwd)"
+set_dir="${current_direct%/*}"
 
 line_num=0
 starting=1
 update_start="$starting"
 current_des="$starting"
-ending=11
+ending=4
 # firstFour=1
 max_parallel_jobs=4
 declare -A gpu_jobs=()  # Associative array to track GPU and job PID
@@ -88,7 +57,7 @@ launch_task() {
     # pushd "${des}"
 
     CUDA_VISIBLE_DEVICES=$gpu_id \
-    /work/RADONC/s226058/wspace/vrk1/pep_des/dl_binder_design/af2_initial_guess/predict.py \
+    PATH_TO/dl_binder_design/af2_initial_guess/predict.py \
     -pdbdir ../af2_init_guess_in -outpdbdir ../af2_init_guess_out.rec8 \
     -scorefilename af2score.dat -recycle 8 &
 
@@ -177,7 +146,7 @@ do
         update_start=$(( update_start + 1 ))
     fi
 
-done < ../../list_of_complexes_dark_confident.dat
+done < ../../example_list_of_complexes.dat
 
 wait
 

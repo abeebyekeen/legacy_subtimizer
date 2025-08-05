@@ -64,9 +64,9 @@ bash 1_batch-run_AFmulti_gpu_v100s.sh
 >* starting = which complex in the list to start processing from.
 >* ending = which complex in the list to end at.
 
-> The script above calls and launches (sbatch) the job script `2_runAFmulti_gpu_v100s.sh`.
+> The script above calls and launches (sbatch) the job script `2_runAFmulti_gpu-v100s.sh`.
 
-> In the `2_runAFmulti_gpu_v100s.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
+> In the `2_runAFmulti_gpu-v100s.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
 
 ##### Option B: Parallel jobs (with multiple GPUs)
 ```bash
@@ -156,14 +156,16 @@ sbatch 17_batch-run_AFmulti_gpu-pid_4v100.sh
 
 ```bash
 bash 19_batch-run_pdb_fix_cpu.sh
-# (20_calls run_pdb_fix_cpu.sh)
+# (calls 20_run_pdb_fix_cpu.sh)
 ```
+> `19_batch-run_pdb_fix_cpu.sh` calls `20_run_pdb_fix_cpu.sh`
+> In `20_run_pdb_fix_cpu.sh`, set the `path_to/pymol/2.5/bin/python`
 
 #### Step 13: Set up `af2_init_guess` folder
 ```bash
 mkdir af2_init_guess && cd af2_init_guess
 cp ../21_runAF2_init_guess_gpu4v_rec8.sh .
-cp ../22_plot_swarm_pae-inter_CSVout_with_oriSub.py .
+cp ../32_plot_swarm_pae-inter_CSVout_with_oriSub.py .
 ```
 
 > Update the path to `dl_binder_design/af2_initial_guess/predict.py` in `21_runAF2_init_guess_gpu4v_rec8.sh`
@@ -175,60 +177,49 @@ sbatch 21_runAF2_init_guess_gpu4v_rec8.sh
 
 #### Step 15: Extract and merge results
 ```bash
-cd ../
-python extract_merge_af2_init_guess_with_folding_data_rec8.py
-python add_ptm-iptm_column_to_merged_data_rec8.py
+cd ../ #change to home directory
+python 22_extract_merge_af2_init_guess_with_folding_data_rec8.py
+python 23_add_ptm-iptm_column_to_merged_data_rec8.py
 ```
 
-
-
-#### Step 16: Compare with original (parent) peptides
+#### Step 16: Set up and run af2_init_guess for parent peptides
 
 ```bash
-bash setup_original_subs_folder.sh
+bash 24_setup_original_subs_folder.sh
 cd original_subs/
-bash batch-run_pdb_fix_cpu_orig.sh
-mkdir af2_init_guess && cd af2_init_guess
-cp ../runAF2_init_guess_gpu4v_rec8_originalSub.sh .
-sbatch runAF2_init_guess_gpu4v_rec8_originalSub.sh
+bash 25_batch-run_pdb_fix_cpu_orig.sh 
+```
+> `25_batch-run_pdb_fix_cpu_orig.sh` calls `26_run_pdb_fix_cpu_orig.sh`
+> In `26_run_pdb_fix_cpu_orig.sh`, set the `path_to/pymol/2.5/bin/python`
+
+```bash
+mkdir af2_init_guess
+cd af2_init_guess
+conda activate af2_des
+cp ../27_runAF2_init_guess_gpu4v_rec8_originalSub.sh .
+```
+> In `27_runAF2_init_guess_gpu4v_rec8_originalSub.sh` set the `PATH_TO/dl_binder_design/af2_initial_guess/predict.py`
+
+```bash
+sbatch 27_runAF2_init_guess_gpu4v_rec8_originalSub.sh
 ```
 
-Then:
 ```bash
 cd ../
-python extract_merge_af2_init_guess_with_folding_data_rec8_oriSub.py
-python add_ptm-iptm_column_to_merged_data_rec8_oriSub.py
+python 28_extract_merge_af2_init_guess_with_folding_data_rec8_oriSub.py
+python 29_add_ptm-iptm_column_to_merged_data_rec8_oriSub.py
 ```
 
-
-
-#### Step 17: Merge all data
+#### Step 17: Merge data for designed and parent peptides
 ```bash
-python merge_test_subs_data_with_orig_subs.py
-python extract_add_pepSEQ_to_outcsv.py
+python 30_merge_test_subs_data_with_orig_subs.py
+python 31_extract_add_pepSEQ_to_outcsv.py
 ```
-
-
 
 #### Step 18: Generate final plots
 ```bash
 cd af2_init_guess
-python plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py
-```
-
----
-
-## 📁 File Structure
-
-```
-subtimizer/
-├── *.py                # Helper scripts
-├── *.sh                # SLURM scripts
-├── af2_des_env.yaml
-├── mpnn_des_env.yaml
-├── instructions.ins
-├── README.md
-└── LICENSE
+python 32_plot_swarm_pae-inter_CSVout_with_oriSub.py
 ```
 
 ---
@@ -237,11 +228,6 @@ subtimizer/
 
 If you use Subtimizer in your work, please cite:
 
-> **Yekeen, A. A. et al.** AI-driven design of potent and selective kinase peptide substrates using Subtimizer. *bioRxiv* (2025).  
-> [https://doi.org/10.1101/2025.07.04.663216](https://doi.org/10.1101/2025.07.04.663216)
+> **Yekeen A.A., Meyer C.J., McCoy M., Posner B., Westover K.D.** A Computational Workflow for Structure-Guided Design of Potent and Selective Kinase Peptide Substrates. *bioRxiv* (2025). [https://doi.org/10.1101/2025.07.04.663216](https://doi.org/10.1101/2025.07.04.663216)
 
 ---
-
-## 📜 License
-
-This project is licensed under the [MIT License](LICENSE).

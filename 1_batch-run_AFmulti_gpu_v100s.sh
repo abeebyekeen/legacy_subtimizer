@@ -43,17 +43,17 @@ do
         fi
         if (( "$firstBatch" >= 1  && "$(ls running_job*.job | wc -l)" < 4 ))
         then
-            if [[ -f "${parent_dir}/runAFmulti_gpu-v100s.sh" ]]
+            if [[ -f "${parent_dir}/2_runAFmulti_gpu_v100s.sh" ]]
             then
-                rm ${parent_dir}/runAFmulti_gpu-v100s.sh
+                rm ${parent_dir}/2_runAFmulti_gpu_v100s.sh
             fi
-            \cp -f ./runAFmulti_gpu-v100s.sh "${parent_dir}"
+            \cp -f ./2_runAFmulti_gpu_v100s.sh "${parent_dir}"
             cd "${parent_dir}"
             
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch runAFmulti_gpu-v100s.sh
+            sbatch 2_runAFmulti_gpu_v100s.sh
 
             touch ../running_job_${line}.job
 
@@ -84,16 +84,16 @@ do
         then
             # echo -e "First job launched\n"
             sleep 1
-            if [[ -f "${parent_dir}/runAFmulti_gpu-v100s.sh" ]]
+            if [[ -f "${parent_dir}/2_runAFmulti_gpu_v100s.sh" ]]
             then
-                rm ${parent_dir}/runAFmulti_gpu-v100s.sh
+                rm ${parent_dir}/2_runAFmulti_gpu_v100s.sh
             fi
-            \cp -f ./runAFmulti_gpu-v100s.sh "${parent_dir}"
+            \cp -f ./2_runAFmulti_gpu_v100s.sh "${parent_dir}"
             cd "${parent_dir}"
             echo -e "Launching $line!"
             sleep 1
 
-            sbatch runAFmulti_gpu-v100s.sh
+            sbatch 2_runAFmulti_gpu_v100s.sh
             
             touch ../running_job_${line}.job
 

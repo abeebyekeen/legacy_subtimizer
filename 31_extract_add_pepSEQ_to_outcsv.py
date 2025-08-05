@@ -9,14 +9,14 @@ import os
 import glob
 
 
-work_home = "/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/YST_fixed"
+work_home = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 intermed8_ori = "original_subs/af2_init_guess/data"
 intermed8 = "AFcomplex/mpnn_out_clust"
 
-special = ["AKT2_gsk3tide_1O6K", "AKT2_gsk3tide_1O6L"]
+special = []
 
 def main():
-    with open("list_of_complexes.dat") as complexes:
+    with open("example_list_of_complexes.dat") as complexes:
         for complex in complexes:
             if complex.startswith("#"): continue
             complex = complex.rstrip("\n")
