@@ -145,7 +145,7 @@ bash 15_batch-run_AFmulti_fold_gpu_v100s.sh
 ##### Option B: Parallel jobs
 ```bash
 sbatch 17_batch-run_AFmulti_gpu-pid_4v100.sh
-# (18_calls runAFm_fold_gpu_4v100.sh)
+# (calls 18_runAFm_fold_gpu_4v100.sh)
 ```
 
 #### Step 12: Prepare PDBs for af2_init_guess
@@ -159,16 +159,18 @@ bash 19_batch-run_pdb_fix_cpu.sh
 # (20_calls run_pdb_fix_cpu.sh)
 ```
 
-#### Step 13: Setup `af2_init_guess` folder
+#### Step 13: Set up `af2_init_guess` folder
 ```bash
 mkdir af2_init_guess && cd af2_init_guess
-cp ../runAF2_init_guess_gpu4v_rec8.sh .
-cp ../plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py .
+cp ../21_runAF2_init_guess_gpu4v_rec8.sh .
+cp ../22_plot_swarm_pae-inter_CSVout_with_oriSub.py .
 ```
+
+> Update the path to `dl_binder_design/af2_initial_guess/predict.py` in `21_runAF2_init_guess_gpu4v_rec8.sh`
 
 #### Step 14: Run af2_init_guess
 ```bash
-sbatch 1-4_runAF2_init_guess_gpu4v_rec8.sh
+sbatch 21_runAF2_init_guess_gpu4v_rec8.sh
 ```
 
 #### Step 15: Extract and merge results
