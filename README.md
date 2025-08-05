@@ -49,18 +49,18 @@ conda env create -f mpnn_des_env.yaml
 echo -e "AKT1_2akt1tide\nALK_axltide\nEGFRm_1csktide\nSGK1_1akt1tide" > example_list_of_complexes.dat
 ```
 
-### Step 2: Set up folder structure
+#### Step 2: Set up folder structure
 ```bash
 python 0_setup_KinasePep_folders.py --file example_list_of_complexes.dat
 ```
 
-### Step 3: Run AF-Multimer
+#### Step 3: Run AF-Multimer
 
-#### Option A: Batch jobs with SLURM
+##### Option A: Batch jobs with SLURM
 ```bash
-bash batch-run_AFmulti_gpu_v100s.sh
+bash 1_batch-run_AFmulti_gpu_v100s.sh
 ```
-> In the `batch-run_AFmulti_gpu.sh` script, the following are the variables you may want to change:
+> In the `1_batch-run_AFmulti_gpu.sh` script, the following are the variables you may want to change:
 >* starting = which complex in the list to start processing from.
 >* ending = which complex in the list to end at.
 
@@ -68,7 +68,7 @@ bash batch-run_AFmulti_gpu_v100s.sh
 
 > In the `2_runAFmulti_gpu_v100s.sh` script, you can set the number of AF-Multimer rounds to run by changing the `rounds` variable.
 
-#### Option B: Parallel jobs (with multiple GPUs)
+##### Option B: Parallel jobs (with multiple GPUs)
 ```bash
 sbatch 3_runAFmulti_parallel_gpu-pid_p100.sh
 ```
@@ -170,7 +170,6 @@ cp ../plot_swarm_pae-inter_CSVout_with_oriSub_fixOrdi_portrait_set_full.py .
 ```bash
 sbatch 1-4_runAF2_init_guess_gpu4v_rec8.sh
 ```
-
 
 #### Step 15: Extract and merge results
 ```bash

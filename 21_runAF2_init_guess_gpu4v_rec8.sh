@@ -27,12 +27,6 @@
 #SBATCH -o job_%j.out
 #SBATCH -e job_%j.err
 
-
-# Activate environment
-
-# conda activate af2_des
-# sleep 3
-
 # module load
 module load cuda121/toolkit/12.1.0
 
@@ -62,7 +56,7 @@ launch_task() {
     # pushd "${des}"
 
     CUDA_VISIBLE_DEVICES=$gpu_id \
-    /work/RADONC/s226058/wspace/vrk1/pep_des/dl_binder_design/af2_initial_guess/predict.py \
+    path_to/dl_binder_design/af2_initial_guess/predict.py \
     -pdbdir ../af2_init_guess_in -outpdbdir ../af2_init_guess_out.rec8 \
     -scorefilename af2score.dat -recycle 8 &
 
@@ -114,7 +108,7 @@ do
     elif (( "$line_num" > "$ending" )) ; then break
     elif (( "$line_num" >= "$starting" && "$line_num" <= "$ending" )) ; then
         home_direct="$(pwd)"
-        set_dir="/work/RADONC/s226058/wspace/proDesign/kinase_pep_design/YST_fixed_dark_fam/confident_AFMcomplexes"
+        set_dir="${home_direct%/*}"
         cd "${set_dir}"
         parent_dir="${set_dir}/${line}/AFcomplex/mpnn_out_clust_fold"
         
@@ -152,7 +146,7 @@ do
         update_start=$(( update_start + 1 ))
     fi
 
-done < ../list_of_complexes_dark_confident.dat
+done < ../example_list_of_complexes.dat
 
 wait
 
