@@ -3,19 +3,18 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/abeebyekeen/subtimizer?style=flat-square)](https://github.com/abeebyekeen/subtimizer/releases)
 [![DOI](https://zenodo.org/badge/doi/10.1101/2025.07.04.663216.svg?style=svg)](http://dx.doi.org/10.1101/2025.07.04.663216)
 
-### Contents
+### 0. Contents
 
-0. [Contents](#contents)
-1. [Prerequisites/Requirements](#prerequisites)
-2. [Clone Subtimizer](#clone-subtimizer)
-3. [Set Up Environments](#set-up-environments)
-4. [Usage](#usage)
-5. [Updating the Code](#6-updating-the-code)
-6. [Citation](#7-citation)
+0. [Contents](#0-contents)
+1. [Prerequisites/Requirements](#1-prerequisites)
+2. [Clone Subtimizer](#2-clone-subtimizer)
+3. [Set Up Environments](#3-set-up-environments)
+4. [Usage](#4-usage)
+5. [Citation](#5-citation)
 
 ---
 
-### Prerequisites
+### 1. Prerequisites
 
 1. [Install Anaconda or Miniconda](https://www.anaconda.com/products/distribution) or [Mamba](https://mamba.readthedocs.io)
 2. [Install ColabFold](https://github.com/YoshitakaMo/localcolabfold)
@@ -24,7 +23,7 @@
 
 ---
 
-### Clone Subtimizer
+### 2. Clone Subtimizer
 
 ```bash
 git clone https://github.com/abeebyekeen/subtimizer.git
@@ -33,7 +32,7 @@ cd subtimizer
 
 ---
 
-### Set up environments
+### 3. Set up environments
 
 ```bash
 conda env create -f af2_des_env.yaml
@@ -42,7 +41,7 @@ conda env create -f mpnn_des_env.yaml
 
 ---
 
-### Usage
+### 4. Usage
 
 #### Step 1: Prepare list of complexes
 ```bash
@@ -159,6 +158,7 @@ bash 19_batch-run_pdb_fix_cpu.sh
 # (calls 20_run_pdb_fix_cpu.sh)
 ```
 > `19_batch-run_pdb_fix_cpu.sh` calls `20_run_pdb_fix_cpu.sh`
+
 > In `20_run_pdb_fix_cpu.sh`, set the `path_to/pymol/2.5/bin/python`
 
 #### Step 13: Set up `af2_init_guess` folder
@@ -190,6 +190,7 @@ cd original_subs/
 bash 25_batch-run_pdb_fix_cpu_orig.sh 
 ```
 > `25_batch-run_pdb_fix_cpu_orig.sh` calls `26_run_pdb_fix_cpu_orig.sh`
+
 > In `26_run_pdb_fix_cpu_orig.sh`, set the `path_to/pymol/2.5/bin/python`
 
 ```bash
@@ -198,7 +199,7 @@ cd af2_init_guess
 conda activate af2_des
 cp ../27_runAF2_init_guess_gpu4v_rec8_originalSub.sh .
 ```
-> In `27_runAF2_init_guess_gpu4v_rec8_originalSub.sh` set the `PATH_TO/dl_binder_design/af2_initial_guess/predict.py`
+> In `27_runAF2_init_guess_gpu4v_rec8_originalSub.sh`, set the `PATH_TO/dl_binder_design/af2_initial_guess/predict.py`
 
 ```bash
 sbatch 27_runAF2_init_guess_gpu4v_rec8_originalSub.sh
@@ -224,7 +225,7 @@ python 32_plot_swarm_pae-inter_CSVout_with_oriSub.py
 
 ---
 
-## 📄 Citation
+### 5. Citation
 
 If you use Subtimizer in your work, please cite:
 
