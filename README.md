@@ -158,6 +158,7 @@ bash 19_batch-run_pdb_fix_cpu.sh
 # (calls 20_run_pdb_fix_cpu.sh)
 ```
 > `19_batch-run_pdb_fix_cpu.sh` calls `20_run_pdb_fix_cpu.sh`
+
 > In `20_run_pdb_fix_cpu.sh`, set the `path_to/pymol/2.5/bin/python`
 
 #### Step 13: Set up `af2_init_guess` folder
@@ -189,6 +190,7 @@ cd original_subs/
 bash 25_batch-run_pdb_fix_cpu_orig.sh 
 ```
 > `25_batch-run_pdb_fix_cpu_orig.sh` calls `26_run_pdb_fix_cpu_orig.sh`
+
 > In `26_run_pdb_fix_cpu_orig.sh`, set the `path_to/pymol/2.5/bin/python`
 
 ```bash
@@ -197,7 +199,7 @@ cd af2_init_guess
 conda activate af2_des
 cp ../27_runAF2_init_guess_gpu4v_rec8_originalSub.sh .
 ```
-> In `27_runAF2_init_guess_gpu4v_rec8_originalSub.sh` set the `PATH_TO/dl_binder_design/af2_initial_guess/predict.py`
+> In `27_runAF2_init_guess_gpu4v_rec8_originalSub.sh`, set the `PATH_TO/dl_binder_design/af2_initial_guess/predict.py`
 
 ```bash
 sbatch 27_runAF2_init_guess_gpu4v_rec8_originalSub.sh
