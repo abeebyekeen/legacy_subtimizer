@@ -7,6 +7,7 @@ __status__  = 'Beta'
 
 import os
 import glob
+from datetime import datetime
 
 
 work_home = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -16,7 +17,8 @@ intermed8 = "AFcomplex/mpnn_out_clust"
 special = []
 
 def main():
-    with open("example_list_of_complexes.dat") as complexes:
+def main():
+    with open("list_of_complexes_upd.dat") as complexes:
         for complex in complexes:
             if complex.startswith("#"): continue
             complex = complex.rstrip("\n")
@@ -53,9 +55,16 @@ def main():
                 for num, line in enumerate(datafile, 1):
                     line = line.rstrip("\n").split(",")
                     des_id, des_data = line[0], line
-                    if num > 1:
+                    if num == 2:
+                        # print(f"des_id raw: {des_id}\n")
                         des_id = des_id.split("_")
-                        des_id = des_id[-1]
+                        complex_key = f"{des_id[1]}{des_id[2]}"
+                        des_id = "".join(des_id)
+                        # print(f"complex key: {complex_key}\n")
+                        # print(f"des_id split: {des_id}\n")
+                    if num > 2:
+                        des_id = des_id.split("_")
+                        des_id = "".join(des_id)
                     dict_in[des_id] = des_data
             
             print(f" Data for {complex} read successfully")
@@ -63,10 +72,14 @@ def main():
 
             dict_seq = {}
             with open(cluster_seq) as seqs:
-                for seq in seqs:
+                for num_, seq in enumerate(seqs, 1):
                     if ">" in seq:
                         header_ = seq.split(",")
                         header_ = header_[1].strip().replace("=","")
+                        calc_line_num = int((num_ + 1) / 2)
+                        header_ = f"{calc_line_num}{complex_key}{header_}"
+                        # if num_ == 3:
+                        #     print(f"seq_3_header: {header_}\n")
                         continue
                     else:
                         seq = seq.rstrip("\n")
@@ -87,6 +100,14 @@ def main():
                     dict_seq["ori"] = seq
                     break
 
+            if os.path.exists(csvfile_out):
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                dir_name, file_name = os.path.split(csvfile_out)
+                bak_name = f"bak.{timestamp}.{file_name}"
+                bak_path = os.path.join(dir_name, bak_name)
+                os.rename(csvfile_out, bak_path)
+                print(f"  [Backup] Existing file archived to: {bak_name}")
+
             with open(csvfile_out, "w") as outfile:
                 for key, value in dict_in.items():
                     for i in value:
@@ -97,6 +118,7 @@ def main():
                     elif not "sample" in key:
                         d_seq = dict_seq["ori"]
                     else:
+                        # print(f"d_seq: {key}\n")
                         d_seq = dict_seq[key]
                     outfile.write(f"{key},{d_seq}\n")
             print(f" {complex} processed successfully\n")
