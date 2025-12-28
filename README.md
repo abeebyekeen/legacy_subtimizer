@@ -223,6 +223,40 @@ cd af2_init_guess
 python 32_plot_swarm_pae-inter_CSVout_with_oriSub.py
 ```
 
+#### Step 19: Run ipSAE for binding evaluation and generate final plots
+1. Download ipSAE from [here](https://github.com/dunbracklab/IPSAE) and add the IPSAE directory to the PATH:
+
+```bash
+export PATH=$PATH:/path/to/ipSAE_directory
+```
+
+2. Run ipSAE on the parental and designed peptides
+```bash
+bash 34_multiKinase_run_batch_ipsae_withIPSAEmin.sh
+```
+> `34_multiKinase_run_batch_ipsae_withIPSAEmin.sh` calls `35_run_batch_ipsae_with_IPSAEmin.py`
+
+> `35_run_batch_ipsae_with_IPSAEmin.py`:
+>calls `python ipsae.py pae_file struct_file PAE_CUTOFF DIST_CUTOFF`
+>parses the output of ipsae.py, extracts and adds the min and max ipSAE values to the merged data
+
+> `ipsae.py` is in the ipSAE directory that you downloaded from github
+
+> `PAE_CUTOFF` and `DIST_CUTOFF` are the pae_inter and dist_inter cutoffs that you want to use
+
+3. Generate plots with ipSAE data
+```bash
+bash 36_run_generate_comparison_plot_ipSAEmin.sh
+```
+
+> `36_run_generate_comparison_plot_ipSAEmin.sh` calls 
+calls `python 37_generate_ipSAE_comparison_plots.py /path/to/merged_data.csv` and `python 38_generate_ipSAEmin_comparison_plots.py /path/to/merged_data.csv`
+
+```bash
+python 39_plot_scatter_ipSAE_pTM-ipTM_vs_pae-inter_with_oriSubs.py
+python 40_plot_scatter_ipSAEmin_pTM-ipTM_vs_pae-inter_with_oriSubs.py
+``` 
+
 ---
 
 ### 5. Citation
