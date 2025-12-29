@@ -1,0 +1,11 @@
+#!/bin/bash
+
+python3 35_run_batch_ipsae_with_IPSAEmin.py /PathTo/root/working_dir/original_subs/af2_init_guess/data/ALK_axltide/ALK_axltide_merged_scores_pTM-ipTM_with_oriSubs_SEQ.csv /PathTo/root/working_dir
+
+python3 35_run_batch_ipsae_with_IPSAEmin.py /PathTo/root/working_dir/original_subs/af2_init_guess/data/EGFRm_1csktide/EGFRm_1csktide_merged_scores_pTM-ipTM_with_oriSubs_SEQ.csv /PathTo/root/working_dir
+
+python3 35_run_batch_ipsae_with_IPSAEmin.py /PathTo/root/working_dir/original_subs/af2_init_guess/data/MET_1csktide/MET_1csktide_merged_scores_pTM-ipTM_with_oriSubs_SEQ.csv /PathTo/root/working_dir
+
+python3 35_run_batch_ipsae_with_IPSAEmin.py /PathTo/root/working_dir/original_subs/af2_init_guess/data/ROS1_csktide/ROS1_csktide_merged_scores_pTM-ipTM_with_oriSubs_SEQ.csv /PathTo/root/working_dir
+
+python3 35_run_batch_ipsae_with_IPSAEmin.py /PathTo/root/working_dir/original_subs/af2_init_guess/data/SRC_1srctide/SRC_1srctide_merged_scores_pTM-ipTM_with_oriSubs_SEQ.csv /PathTo/root/working_dir
